@@ -1,4 +1,4 @@
-package com.example.simplepayment.controller.response;
+package com.example.simplepayment.wallet.presentation.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

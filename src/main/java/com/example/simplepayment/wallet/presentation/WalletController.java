@@ -1,11 +1,11 @@
-package com.example.simplepayment.controller;
+package com.example.simplepayment.wallet.presentation;
 
-import com.example.simplepayment.controller.request.AddBalanceWalletRequest;
-import com.example.simplepayment.controller.request.CreateWalletRequest;
-import com.example.simplepayment.controller.response.AddBalanceWalletResponse;
-import com.example.simplepayment.controller.response.CreateWalletResponse;
-import com.example.simplepayment.controller.response.SearchWalletResponse;
-import com.example.simplepayment.service.WalletService;
+import com.example.simplepayment.wallet.presentation.request.AddBalanceWalletRequest;
+import com.example.simplepayment.wallet.presentation.request.CreateWalletRequest;
+import com.example.simplepayment.wallet.presentation.response.AddBalanceWalletResponse;
+import com.example.simplepayment.wallet.presentation.response.CreateWalletResponse;
+import com.example.simplepayment.wallet.presentation.response.SearchWalletResponse;
+import com.example.simplepayment.wallet.application.WalletService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;

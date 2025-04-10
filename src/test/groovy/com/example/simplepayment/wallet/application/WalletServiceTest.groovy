@@ -1,9 +1,9 @@
-package com.example.simplepayment.service
+package com.example.simplepayment.wallet.application
 
-import com.example.simplepayment.controller.request.AddBalanceWalletRequest
-import com.example.simplepayment.controller.request.CreateWalletRequest
-import com.example.simplepayment.domain.Wallet
-import com.example.simplepayment.domain.WalletRepository
+import com.example.simplepayment.wallet.presentation.request.AddBalanceWalletRequest
+import com.example.simplepayment.wallet.presentation.request.CreateWalletRequest
+import com.example.simplepayment.wallet.domain.Wallet
+import com.example.simplepayment.wallet.domain.WalletRepository
 import spock.lang.Specification
 
 class WalletServiceTest extends Specification {

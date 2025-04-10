@@ -1,17 +1,16 @@
-package com.example.simplepayment.service;
+package com.example.simplepayment.wallet.application;
 
-import com.example.simplepayment.controller.request.AddBalanceWalletRequest;
-import com.example.simplepayment.controller.request.CreateWalletRequest;
-import com.example.simplepayment.controller.response.AddBalanceWalletResponse;
-import com.example.simplepayment.controller.response.CreateWalletResponse;
-import com.example.simplepayment.controller.response.SearchWalletResponse;
-import com.example.simplepayment.domain.Wallet;
-import com.example.simplepayment.domain.WalletRepository;
+import com.example.simplepayment.wallet.presentation.request.AddBalanceWalletRequest;
+import com.example.simplepayment.wallet.presentation.request.CreateWalletRequest;
+import com.example.simplepayment.wallet.presentation.response.AddBalanceWalletResponse;
+import com.example.simplepayment.wallet.presentation.response.CreateWalletResponse;
+import com.example.simplepayment.wallet.presentation.response.SearchWalletResponse;
+import com.example.simplepayment.wallet.domain.Wallet;
+import com.example.simplepayment.wallet.domain.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor

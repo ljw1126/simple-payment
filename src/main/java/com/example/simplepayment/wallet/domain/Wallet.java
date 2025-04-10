@@ -1,4 +1,4 @@
-package com.example.simplepayment.domain;
+package com.example.simplepayment.wallet.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

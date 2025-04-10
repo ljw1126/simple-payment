@@ -1,4 +1,4 @@
-package com.example.simplepayment.controller.request;
+package com.example.simplepayment.wallet.presentation.request;
 
 import java.math.BigDecimal;
 
