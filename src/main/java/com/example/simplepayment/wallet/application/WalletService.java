@@ -1,12 +1,12 @@
 package com.example.simplepayment.wallet.application;
 
+import com.example.simplepayment.wallet.domain.Wallet;
+import com.example.simplepayment.wallet.domain.WalletRepository;
 import com.example.simplepayment.wallet.presentation.request.AddBalanceWalletRequest;
 import com.example.simplepayment.wallet.presentation.request.CreateWalletRequest;
 import com.example.simplepayment.wallet.presentation.response.AddBalanceWalletResponse;
 import com.example.simplepayment.wallet.presentation.response.CreateWalletResponse;
 import com.example.simplepayment.wallet.presentation.response.SearchWalletResponse;
-import com.example.simplepayment.wallet.domain.Wallet;
-import com.example.simplepayment.wallet.domain.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +33,14 @@ public class WalletService {
     public SearchWalletResponse findWalletByUserId(Long userId) {
         return walletRepository.findWalletByUserId(userId)
                 .map(w -> new SearchWalletResponse(w.getId(), w.getUserId(), w.getBalance(), w.getCreatedAt(), w.getUpdatedAt()))
-                .orElse(null);
+                .orElseThrow(() -> new IllegalStateException("사용자의 지갑이 존재하지 않습니다"));
+    }
+
+    @Transactional(readOnly = true)
+    public SearchWalletResponse findWalletByWalletId(Long walletId) {
+        return walletRepository.findById(walletId)
+                .map(w -> new SearchWalletResponse(w.getId(), w.getUserId(), w.getBalance(), w.getCreatedAt(), w.getUpdatedAt()))
+                .orElseThrow(() -> new IllegalStateException("사용자의 지갑이 존재하지 않습니다"));
     }
 
     @Transactional
