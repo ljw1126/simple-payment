@@ -36,11 +36,11 @@ public class Wallet extends BaseTimeEntity {
     public void addBalance(BigDecimal amount) {
         BigDecimal newBalance = this.balance.add(amount);
 
-        if(newBalance.compareTo(BigDecimal.ZERO) < 0) {
+        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalStateException("잔액이 충분하지 않습니다");
         }
 
-        if(BALANCE_LIMIT.compareTo(newBalance) < 0) {
+        if (BALANCE_LIMIT.compareTo(newBalance) < 0) {
             throw new IllegalStateException("한도를 초과했습니다");
         }
 

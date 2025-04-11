@@ -29,7 +29,7 @@ public class TransactionService {
         SearchWalletResponse wallet = walletService.findWalletByUserId(request.userId());
 
         boolean isPresentChargeTransaction = transactionRepository.findByTransactionTarget(TransactionTarget.charge(request.orderId())).isPresent();
-        if(isPresentChargeTransaction) {
+        if (isPresentChargeTransaction) {
             throw new IllegalStateException("이미 충전된 거래입니다");
         }
 
@@ -44,7 +44,7 @@ public class TransactionService {
     @Transactional
     public PaymentTransactionResponse payment(PaymentTransactionRequest request) {
         boolean isPresentPaymentTransaction = transactionRepository.findByTransactionTarget(TransactionTarget.payment(request.courseId())).isPresent();
-        if(isPresentPaymentTransaction) {
+        if (isPresentPaymentTransaction) {
             throw new IllegalStateException("이미 결제된 강의입니다");
         }
 

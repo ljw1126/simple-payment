@@ -22,7 +22,7 @@ public class WalletService {
     @Transactional
     public CreateWalletResponse create(CreateWalletRequest request) {
         boolean isPresent = walletRepository.findWalletByUserId(request.userId()).isPresent();
-        if(isPresent) {
+        if (isPresent) {
             throw new IllegalStateException("이미 지갑이 있습니다");
         }
 
