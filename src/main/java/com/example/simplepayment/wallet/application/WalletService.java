@@ -1,5 +1,6 @@
 package com.example.simplepayment.wallet.application;
 
+import com.example.simplepayment.common.Snowflake;
 import com.example.simplepayment.wallet.domain.Wallet;
 import com.example.simplepayment.wallet.domain.WalletRepository;
 import com.example.simplepayment.wallet.presentation.request.AddBalanceWalletRequest;
@@ -11,11 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 @RequiredArgsConstructor
 @Service
 public class WalletService {
+    private final Snowflake snowflake = new Snowflake();
+
     private final WalletRepository walletRepository;
 
     @Transactional
@@ -25,7 +26,7 @@ public class WalletService {
             throw new IllegalStateException("이미 지갑이 있습니다");
         }
 
-        final Wallet saved = walletRepository.save(new Wallet(request.userId()));
+        final Wallet saved = walletRepository.save(new Wallet(snowflake.nextId(), request.userId()));
         return new CreateWalletResponse(saved.getId(), saved.getUserId(), saved.getBalance());
     }
 
@@ -48,7 +49,7 @@ public class WalletService {
         final Wallet wallet = walletRepository.findById(request.walletId())
                 .orElseThrow(() -> new IllegalStateException("지갑이 없습니다"));
 
-        wallet.addBalance(request.amount(), LocalDateTime.now());
+        wallet.addBalance(request.amount());
         walletRepository.save(wallet);
 
         return new AddBalanceWalletResponse(

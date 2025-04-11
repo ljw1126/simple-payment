@@ -28,9 +28,4 @@ public class WalletController {
     public SearchWalletResponse findWalletByUserId(@PathVariable("userId") Long userId) {
         return walletService.findWalletByUserId(userId);
     }
-
-    @PatchMapping("/api/wallet/balance")
-    public AddBalanceWalletResponse addBalanceWallet(@RequestBody AddBalanceWalletRequest request) {
-        return walletService.addBalance(request);
-    }
 }

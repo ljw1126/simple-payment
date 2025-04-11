@@ -4,7 +4,6 @@ import com.example.simplepayment.transaction.domain.Transaction
 import com.example.simplepayment.transaction.domain.TransactionRepository
 import com.example.simplepayment.transaction.presentation.request.ChargeTransactionRequest
 import com.example.simplepayment.transaction.presentation.request.PaymentTransactionRequest
-import com.example.simplepayment.wallet.application.WalletService
 import com.example.simplepayment.wallet.domain.Wallet
 import com.example.simplepayment.wallet.domain.WalletRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
-
-import java.time.LocalDateTime
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -47,7 +44,7 @@ class TransactionServiceIntegrationTest extends Specification{
         def userId = 1L
         def orderId = 99L
 
-        def wallet = walletRepository.save(new Wallet(1L))
+        def wallet = walletRepository.save(new Wallet(1L, userId))
         transactionRepository.save(Transaction.createChargeTransaction(1L, userId, wallet.getId(), orderId, BigDecimal.TEN))
 
         def request = new ChargeTransactionRequest(userId, orderId, BigDecimal.TEN)
@@ -64,7 +61,7 @@ class TransactionServiceIntegrationTest extends Specification{
         given:
         def userId = 1L
         def orderId = 99L
-        def wallet = walletRepository.save(new Wallet(1L))
+        def wallet = walletRepository.save(new Wallet(1L, userId))
 
         def request = new ChargeTransactionRequest(userId, 99L, BigDecimal.TEN)
 
@@ -115,7 +112,7 @@ class TransactionServiceIntegrationTest extends Specification{
         def courseId = 99L
         def amount = BigDecimal.valueOf(10000)
 
-        def wallet = walletRepository.save(new Wallet(1L))
+        def wallet = walletRepository.save(new Wallet(1L, 1L))
         def request = new PaymentTransactionRequest(wallet.getId(), courseId, amount)
 
         when:
@@ -131,7 +128,7 @@ class TransactionServiceIntegrationTest extends Specification{
         def courseId = 99L
         def amount = BigDecimal.valueOf(10000)
 
-        def wallet = walletRepository.save(new Wallet(null, 1L, BigDecimal.valueOf(10001), LocalDateTime.now(), LocalDateTime.now()))
+        def wallet = walletRepository.save(new Wallet(1L, 1L, BigDecimal.valueOf(10001)))
         def request = new PaymentTransactionRequest(wallet.getId(), courseId, amount)
 
         when:

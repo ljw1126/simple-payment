@@ -1,12 +1,9 @@
 package com.example.simplepayment.wallet.presentation
 
-
-import com.example.simplepayment.wallet.presentation.request.AddBalanceWalletRequest
+import com.example.simplepayment.wallet.application.WalletService
 import com.example.simplepayment.wallet.presentation.request.CreateWalletRequest
-import com.example.simplepayment.wallet.presentation.response.AddBalanceWalletResponse
 import com.example.simplepayment.wallet.presentation.response.CreateWalletResponse
 import com.example.simplepayment.wallet.presentation.response.SearchWalletResponse
-import com.example.simplepayment.wallet.application.WalletService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -69,29 +66,5 @@ class WalletControllerTest extends Specification {
                 .andExpect(jsonPath('$.balance').value(BigDecimal.ZERO))
                 .andExpect(jsonPath('$.createdAt').value(yesterday.toString()))
                 .andExpect(jsonPath('$.updatedAt').value(yesterday.toString()))
-    }
-
-
-    def "지갑에 충전 요청을 하면 처리 후 응답한다"() {
-        given:
-        def userId = 1L
-        def now = LocalDateTime.now()
-        walletService.addBalance(_) >> new AddBalanceWalletResponse(1L, userId, BigDecimal.valueOf(1000L), now, now)
-        def request = new AddBalanceWalletRequest(1L, BigDecimal.valueOf(1000L))
-
-        when:
-        def response = mockMvc.perform(MockMvcRequestBuilders.patch("/api/wallet/balance")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request))
-        )
-
-        then:
-        response.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath('$.id').value(1L))
-                .andExpect(jsonPath('$.userId').value(userId))
-                .andExpect(jsonPath('$.balance').value(BigDecimal.valueOf(1000L)))
-                .andExpect(jsonPath('$.createdAt').value(now.toString()))
-                .andExpect(jsonPath('$.updatedAt').value(now.toString()))
     }
 }

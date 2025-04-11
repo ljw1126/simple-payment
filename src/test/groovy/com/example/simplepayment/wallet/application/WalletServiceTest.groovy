@@ -1,9 +1,9 @@
 package com.example.simplepayment.wallet.application
 
-import com.example.simplepayment.wallet.presentation.request.AddBalanceWalletRequest
-import com.example.simplepayment.wallet.presentation.request.CreateWalletRequest
 import com.example.simplepayment.wallet.domain.Wallet
 import com.example.simplepayment.wallet.domain.WalletRepository
+import com.example.simplepayment.wallet.presentation.request.AddBalanceWalletRequest
+import com.example.simplepayment.wallet.presentation.request.CreateWalletRequest
 import spock.lang.Specification
 
 class WalletServiceTest extends Specification {
@@ -19,13 +19,13 @@ class WalletServiceTest extends Specification {
         def userId = 1L
         CreateWalletRequest request = new CreateWalletRequest(userId);
         walletRepository.findWalletByUserId(_) >> Optional.empty()
-        walletRepository.save(_) >> new Wallet(userId)
+        walletRepository.save(_) >> new Wallet(1L, userId)
 
         when:
         def createdWallet = walletService.create(request);
 
         then:
-        1 * walletRepository.save(_) >> new Wallet(userId)
+        1 * walletRepository.save(_) >> new Wallet(1L, userId)
         createdWallet != null
         createdWallet.userId == 1L
         createdWallet.balance == BigDecimal.ZERO
@@ -35,7 +35,7 @@ class WalletServiceTest extends Specification {
         given:
         def userId = 1L
         CreateWalletRequest request = new CreateWalletRequest(userId);
-        walletRepository.findWalletByUserId(_) >> Optional.of(new Wallet(1L, 1L, BigDecimal.ZERO, null, null))
+        walletRepository.findWalletByUserId(_) >> Optional.of(new Wallet(1L, 1L, BigDecimal.ZERO))
 
         when:
         walletService.create(request);
@@ -48,7 +48,7 @@ class WalletServiceTest extends Specification {
     def "지갑을 조회한다 - 생성되어 있는 경우"() {
         given:
         def userId = 1L
-        def wallet = new Wallet(userId)
+        def wallet = new Wallet(1L, userId)
         wallet.balance = new BigDecimal(1000)
         walletRepository.findWalletByUserId(userId) >> Optional.of(wallet)
 
@@ -69,7 +69,9 @@ class WalletServiceTest extends Specification {
         def result = walletService.findWalletByUserId(userId);
 
         then:
-        result == null
+        def ex = thrown(IllegalStateException)
+        ex != null
+        ex.getMessage() == "사용자의 지갑이 존재하지 않습니다"
     }
 
     def "잔액을 충전한다 - 지갑이 없는 경우 예외를 반환한다" () {
@@ -89,7 +91,7 @@ class WalletServiceTest extends Specification {
         given:
         def walletId = 1L
         def request = new AddBalanceWalletRequest(walletId, BigDecimal.valueOf(-1L));
-        walletRepository.findById(_) >> Optional.of(new Wallet(walletId, 1L, BigDecimal.ZERO, null, null))
+        walletRepository.findById(_) >> Optional.of(new Wallet(walletId, 1L, BigDecimal.ZERO))
 
         when:
         walletService.addBalance(request);
@@ -104,7 +106,7 @@ class WalletServiceTest extends Specification {
         given:
         def walletId = 1L
         def request = new AddBalanceWalletRequest(walletId, BigDecimal.valueOf(10_0001L));
-        walletRepository.findById(_) >> Optional.of(new Wallet(walletId, 1L, BigDecimal.ZERO, null, null))
+        walletRepository.findById(_) >> Optional.of(new Wallet(walletId, 1L, BigDecimal.ZERO))
 
         when:
         walletService.addBalance(request);
@@ -119,7 +121,7 @@ class WalletServiceTest extends Specification {
         def walletId = 1L
         def amount = 100_000L
         def request = new AddBalanceWalletRequest(walletId, BigDecimal.valueOf(amount));
-        walletRepository.findById(_) >> Optional.of(new Wallet(walletId, 1L, BigDecimal.ZERO, null, null))
+        walletRepository.findById(_) >> Optional.of(new Wallet(walletId, 1L, BigDecimal.ZERO))
 
         when:
         def result = walletService.addBalance(request);

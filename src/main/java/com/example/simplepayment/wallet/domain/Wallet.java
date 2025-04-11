@@ -1,44 +1,39 @@
 package com.example.simplepayment.wallet.domain;
 
+import com.example.simplepayment.common.BaseTimeEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Data
+@Getter
+@Table(name = "wallet")
 @Entity
-public class Wallet {
+public class Wallet extends BaseTimeEntity {
     private final static BigDecimal BALANCE_LIMIT = new BigDecimal(100_000);
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long userId;
 
+    @Column(nullable = false)
     private BigDecimal balance;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
-    public Wallet(Long userId) {
-        this.userId = userId;
-        this.balance = new BigDecimal(0);
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+    public Wallet(Long id, Long userId) {
+        this(id, userId, BigDecimal.ZERO);
     }
 
-    public void addBalance(BigDecimal amount, LocalDateTime timestamp) {
+    public void addBalance(BigDecimal amount) {
         BigDecimal newBalance = this.balance.add(amount);
 
         if(newBalance.compareTo(BigDecimal.ZERO) < 0) {
@@ -50,6 +45,5 @@ public class Wallet {
         }
 
         this.balance = newBalance;
-        this.updatedAt = timestamp;
     }
 }
